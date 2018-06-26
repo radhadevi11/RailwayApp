@@ -7,7 +7,7 @@ public class Train {
     private String number;
     private Station sourceStation;
     private Station destinationStation;
-    private ArrayList<TrainStop> trainStops;
+    private ArrayList<TrainStop> trainStops = new ArrayList<>();
 
 
     public Train(String name, String number, Station sourceStation, Station destinationStation) {
@@ -39,5 +39,18 @@ public class Train {
 
     public void addTrainStop(TrainStop stop) {
         trainStops.add(stop);
+    }
+
+    public boolean equals(Object other) {
+        if (other instanceof Train) {
+            Train otherTrain = (Train) other;
+            if (this.getNumber().equals(otherTrain.getNumber())) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
     }
 }

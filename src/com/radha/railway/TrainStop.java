@@ -6,13 +6,15 @@ public class TrainStop {
     private Train train;
     private int sequence;
     private Station station;
+    private long distance;
 
-    public TrainStop(String arrivalTime, String departureTime, Train train, int sequence, Station station) {
+    public TrainStop(String arrivalTime, String departureTime, Train train, int sequence, Station station,long distance) {
         this.arrivalTime = arrivalTime;
         this.departureTime = departureTime;
         this.train = train;
         this.sequence = sequence;
         this.station = station;
+        this.distance = distance;
 
     }
 
@@ -36,5 +38,7 @@ public class TrainStop {
         return station;
     }
 
-
+    public long getDistance() {
+        return distance;
+    }
 }

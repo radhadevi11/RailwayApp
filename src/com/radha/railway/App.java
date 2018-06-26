@@ -1,11 +1,7 @@
 package com.radha.railway;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class App {
     private static ArrayList<Train> trains = new ArrayList<>();
@@ -105,28 +101,65 @@ public class App {
 
     }
 
-/*Steps:
-      1)get the from station code eg:11
-      2)get the to station code   eg:33
-      3)dispaly the intermidiate station code names ie,12-32
+/*Algorithm
+  Chennai - santragachi(1-12)(each station of the train is a train stop)
+Step0.1:Initialize an empty Train object(currentTrain) and inizialize stations map and initialize a trais list.
+Step0:For each Line in the File do
+Step1:Create a Station.
+Step1.1:Store the station code and Station into the map.
+Step2:if currentTrain is empty OR this trainNo is NOT equal to the currentTrain trainNo
+	Step2.1:Create a sourceStation
+	Step2.2:Create a Destination Station
+	Ste2.3:Create a Train and store it into the curentTrain
+
+Step3:Create a TrainStop
+Step4:Add TrainStop to currentTrain
+Step5:Add the currentTrain to the trains list.
  */
-/*Algorithm:
-     Step1:for each train(Different trains for source to Destination) in the given entries do
-              i)get the source station sequence number.
-              ii)get the destination station sequence number.
-              iii)for each sequence from source to destination do
-                        a)get the corresponding station name
-                        b)store it in the map
-     Step2:return the map.*/
-//TODO It will create a two lists(ie)List of trains and map of stations
-    public static void loadFromFile(File myFile){
+
+    //TODO It will create a two lists(ie)List of trains and map of stations
+    public static void loadFromFile(File myFile) throws IOException {
+        loadFromFile(new BufferedReader(new FileReader(myFile)));
+    }
+
+    //TODO It will create a two lists(ie)List of trains and map of stations
+    public static void loadFromFile(BufferedReader myReader) throws IOException {
         //similar to readFromFile
         //get the stations and trains
+        Train currentTrain = null ;
+        String readText;
+        myReader.readLine();
+        while ((readText= myReader.readLine()) != null) {
+            String splitText[]= readText.split(",");
+            int newSequence=Integer.parseInt(splitText[2]);
+            long newDistance=Long.parseLong(splitText[7]);
+            Station currentStaion = new Station(splitText[4],splitText[3]);
+            stations.put(currentStaion.getCode(),currentStaion);
+            if(currentTrain == null || !currentTrain.getNumber().equals(splitText[0])){
+                Station sourceStation = new Station(splitText[9],splitText[8]);
+                Station destinationStation = new Station(splitText[11],splitText[10]);
+                currentTrain = new Train(splitText[1],splitText[0],
+                        sourceStation,destinationStation);
+
+            }
+            TrainStop trainStop = new TrainStop(splitText[5],splitText[6],
+                    currentTrain,newSequence,currentStaion,newDistance);
+            currentTrain.addTrainStop(trainStop);
+            trains.add(currentTrain);
+
+        }
+
+
     }
 
 
+    public static List<Train> getTrains() {
+        return trains;
+    }
 
-
+    public static Map<String, Station> getStations() {
+        return  stations;
+    }
 
 }
 

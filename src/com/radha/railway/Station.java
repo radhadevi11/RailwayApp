@@ -16,4 +16,16 @@ class Station{
     public String getCode() {
         return code;
     }
+    public boolean equals(Object other) {
+        if (other instanceof Station) {
+            Station otherStation = (Station) other;
+            if (this.getCode().equals(otherStation.getCode())) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
+    }
 }

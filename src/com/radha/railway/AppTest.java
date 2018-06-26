@@ -1,10 +1,16 @@
 package com.radha.railway;
 
 import org.junit.jupiter.api.Test;
+import sun.nio.cs.StreamDecoder;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -118,5 +124,43 @@ class AppTest {
 
 
 
+    }
+
+    @Test
+    void testLoadFromFile() throws IOException {
+        String oneLine = "Train No,Train Name,SEQ,Station Code,Station Name,Arrival time,Departure Time,Distance,Source Station,Source Station Name,Destination Station,Destination Station Name\n" +
+                "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.";
+        BufferedReader input = new BufferedReader(new StringReader(oneLine));
+        App.loadFromFile(input);
+
+        List<Train> expected = new ArrayList<>();
+        expected.add(new Train("MAS SRC SPL", "2842",
+                new Station("CHENNAI CENT", "MAS"),
+                new Station("SANTRAGACHI JN.", "SRC")));
+        assertEquals(expected, App.getTrains());
+        HashMap<String,Station> expectedStation = new HashMap<>();
+        expectedStation.put("MAS",
+                new Station("CHENNAI CENT", "MAS"));
+        assertEquals(expectedStation,App.getStations());
+    }
+    @Test
+    void testLoadFromFileForMultipleStations() throws IOException {
+        String twoEntries = "Train No,Train Name,SEQ,Station Code,Station Name,Arrival time,Departure Time,Distance,Source Station,Source Station Name,Destination Station,Destination Station Name\n" +
+        "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.\n" +
+        "2842,MAS SRC SPL,2,NLR,NELLORE,21:40:00,21:42:00,175,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.";
+        BufferedReader input = new BufferedReader(new StringReader(twoEntries));
+        App.loadFromFile(input);
+
+        List<Train> expected = new ArrayList<>();
+        expected.add(new Train("MAS SRC SPL", "2842",
+                new Station("CHENNAI CENT", "MAS"),
+                new Station("SANTRAGACHI JN.", "SRC")));
+        assertEquals(expected, App.getTrains());
+        HashMap<String,Station> expectedStation = new HashMap<>();
+        expectedStation.put("MAS",
+                new Station("CHENNAI CENT", "MAS"));
+        expectedStation.put("NLR",
+                new Station("NELLORE","NLR"));
+        assertEquals(expectedStation,App.getStations());
     }
 }
