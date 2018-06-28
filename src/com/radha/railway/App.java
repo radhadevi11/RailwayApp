@@ -140,12 +140,13 @@ Step5:Add the currentTrain to the trains list.
                 Station destinationStation = new Station(splitText[11],splitText[10]);
                 currentTrain = new Train(splitText[1],splitText[0],
                         sourceStation,destinationStation);
+                trains.add(currentTrain);
+
 
             }
             TrainStop trainStop = new TrainStop(splitText[5],splitText[6],
                     currentTrain,newSequence,currentStaion,newDistance);
             currentTrain.addTrainStop(trainStop);
-            trains.add(currentTrain);
 
         }
 
