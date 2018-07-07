@@ -1,5 +1,7 @@
 package com.radha.railway;
 
+import com.radha.railway.controller.TrainController;
+
 import java.io.*;
 import java.util.*;
 
@@ -8,25 +10,19 @@ public class App {
     private static HashMap<String,Station> stations = new HashMap<>();
     public static void main(String[] args) throws IOException {
         File csv = new File("C:\\Users\\radha\\Downloads\\ChennaiCentralTimetable.csv");
-        ArrayList<TimeTableEntry> myEntries = TimeTableEntry.readFromFile(csv);
-//        for (TimeTableEntry newEntry : myEntries) {
-//            System.out.println(newEntry);
-//        }
-        /*HashSet<String> stationNames = getStationNames(myEntries);
-        System.out.println("The Station names are");
-        for (String eachName : stationNames) {
-            System.out.println(eachName);
-        }*/
-        HashMap<String,String> uniqueStationNames =  getStationNamesAsMap(myEntries);
+        TrainController trainController = new TrainController();
+        TimeTable timeTable = trainController.loadFromFile(csv);
+
         System.out.println("Where are you traveling from?? :");
         System.out.println("Enter the Station code from the list below......");
-        for(String code: uniqueStationNames.keySet())
+        Map<String, Station> fromStations = trainController.getFromStations();
+        for(String code: fromStations.keySet())
         {
-            System.out.println("Code:"+code+ " stationName: "+uniqueStationNames.get(code));
+            System.out.println("Code:"+code+ " stationName: "+fromStations.get(code));
         }
         Scanner scanner = new Scanner(System.in);
         String fromStationCode = scanner.next();
-        HashMap<String,String> destinationStations = getDestinationStationNames(fromStationCode,uniqueStationNames);
+        Map<String, Station> destinationStations = trainController.getToStations(fromStationCode, timeTable);
         System.out.println("Where are you traveling to??:");
         System.out.println("Enter the Station code from the list below......");
         for (String code : destinationStations.keySet()){

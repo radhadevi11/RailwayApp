@@ -8,7 +8,7 @@ public class TrainStop {
     private Station station;
     private long distance;
 
-    public TrainStop(String arrivalTime, String departureTime, Train train, int sequence, Station station,long distance) {
+    public TrainStop(String arrivalTime, String departureTime, Train train, int sequence, Station station, long distance) {
         this.arrivalTime = arrivalTime;
         this.departureTime = departureTime;
         this.train = train;

@@ -40,6 +40,14 @@ public class Train {
     public void addTrainStop(TrainStop stop) {
         trainStops.add(stop);
     }
+    public ArrayList<Station> getStoppingStations(){
+         ArrayList<Station> stations = new ArrayList<>();
+         for(TrainStop currentStop : trainStops ) {
+             Station currentStation = currentStop.getStation();
+             stations.add(currentStation);
+         }
+         return stations;
+    }
 
     public boolean equals(Object other) {
         if (other instanceof Train) {
@@ -53,4 +61,5 @@ public class Train {
         }
         return false;
     }
+
 }
