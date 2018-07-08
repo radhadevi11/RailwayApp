@@ -40,11 +40,13 @@ public class Train {
     public void addTrainStop(TrainStop stop) {
         trainStops.add(stop);
     }
-    public ArrayList<Station> getStoppingStations(){
+    public ArrayList<Station> getStoppingStations(int sequence){
          ArrayList<Station> stations = new ArrayList<>();
          for(TrainStop currentStop : trainStops ) {
-             Station currentStation = currentStop.getStation();
-             stations.add(currentStation);
+             if(currentStop.getSequence() > sequence) {
+                 Station currentStation = currentStop.getStation();
+                 stations.add(currentStation);
+             }
          }
          return stations;
     }

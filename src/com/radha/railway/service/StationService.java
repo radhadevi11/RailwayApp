@@ -23,8 +23,10 @@ public class StationService {
         Map<String, Station> destinationStations = new HashMap();
         Map<String, Station> stations = timeTable.getStations();
         Station fromStation = stations.get(fromStationCode);
-        for (Train stoppingTrain : fromStation.getStoppingTrains()) {
-            ArrayList<Station> stopingStations = stoppingTrain.getStoppingStations();
+        for (TrainStop trainStop : fromStation.getTrainStops()) {
+            int sequence = trainStop.getSequence();
+            Train stoppingTrain = trainStop.getTrain();
+            ArrayList<Station> stopingStations = stoppingTrain.getStoppingStations(sequence);
             for (Station stoppingStation : stopingStations) {
                 destinationStations.put(stoppingStation.getCode(), stoppingStation);
             }
