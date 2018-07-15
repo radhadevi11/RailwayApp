@@ -1,4 +1,4 @@
-package com.radha.railway.service;
+package com.radha.railway.dao;
 
 import com.radha.railway.Station;
 import com.radha.railway.TimeTable;
@@ -6,14 +6,29 @@ import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class TimeTableLoader {
+public class TimeTableDao {
+    private TimeTable timeTable;
+    /*Algorithm
+Chennai - santragachi(1-12)(each station of the train is a train stop)
+Step0.1:Initialize an empty Train object(currentTrain) and inizialize stations map and initialize a trais list.
+Step0:For each Line in the File do
+Step1:Create a Station.
+Step1.1:Store the station code and Station into the map.
+Step2:if currentTrain is empty OR this trainNo is NOT equal to the currentTrain trainNo
+  Step2.1:Create a sourceStation
+  Step2.2:Create a Destination Station
+  Ste2.3:Create a Train and store it into the curentTrain
 
+Step3:Create a TrainStop
+Step4:Add TrainStop to currentTrain
+Step5:Add the currentTrain to the trains list.
+*/
     public TimeTable loadFromFile(BufferedReader myReader) throws IOException {
         //similar to readFromFile
         //get the stations and trains
@@ -28,7 +43,7 @@ public class TimeTableLoader {
             int newSequence=Integer.parseInt(splitText[2]);
             long newDistance=Long.parseLong(splitText[7]);
             if(stations.get(splitText[3])==null) {
-                 currentStation = new Station(splitText[4], splitText[3]);
+                currentStation = new Station(splitText[4], splitText[3]);
                 stations.put(currentStation.getCode(), currentStation);
             }
             else{
@@ -55,4 +70,17 @@ public class TimeTableLoader {
     }
 
 
+    public TimeTable loadFromFile(File myFile) throws IOException {
+        timeTable = loadFromFile(new BufferedReader(new FileReader(myFile)));
+        return timeTable;
+    }
+
+    public TimeTable getTimeTable() throws IOException {
+        if (timeTable == null) {
+            File csv = new File("C:\\Users\\radha\\Downloads\\ChennaiCentralTimetable.csv");
+            loadFromFile(csv);
+            //store in database
+        }
+        return timeTable;
+    }
 }

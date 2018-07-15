@@ -4,12 +4,19 @@ import com.radha.railway.Station;
 import com.radha.railway.TimeTable;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
+import com.radha.railway.dao.TimeTableDao;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StationService {
+    private static TimeTableDao timeTableDao = new TimeTableDao();
+    public Map<String, Station> getToStations(String fromStationCode) throws IOException {
+        TimeTable timeTable = timeTableDao.getTimeTable();
+        return getToStations(fromStationCode, timeTable);
+    }
     public Map<String, Station> getToStations(String fromStationCode, TimeTable timeTable) {
           /* Algorithm:
         Step1:Declare a TimeTable object as timeTable and a map as destinationStations.
@@ -20,6 +27,7 @@ public class StationService {
             a)Get the Station and put it into the destinationStations
 
         return null;*/
+        System.out.println("Getting to stations for fromStationdCode:" + fromStationCode);
         Map<String, Station> destinationStations = new HashMap();
         Map<String, Station> stations = timeTable.getStations();
         Station fromStation = stations.get(fromStationCode);
@@ -32,5 +40,9 @@ public class StationService {
             }
         }
         return destinationStations;
+    }
+
+    public Map<String, Station> getFromStations() throws IOException {
+        return timeTableDao.getTimeTable().getStations();
     }
 }

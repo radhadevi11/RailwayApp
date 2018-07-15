@@ -1,6 +1,9 @@
-package com.radha.railway.service;
+package com.radha.railway.dao;
 
-import com.radha.railway.*;
+import com.radha.railway.Station;
+import com.radha.railway.TimeTable;
+import com.radha.railway.Train;
+import com.radha.railway.TrainStop;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -12,14 +15,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TimeTableLoaderTest {
+class TimeTableDaoTest {
     @Test
     void testLoadFromFile() throws IOException {
-        TimeTableLoader myLoader = new TimeTableLoader();
+        TimeTableDao timeTableDao = new TimeTableDao();
         String oneLine = "Train No,Train Name,SEQ,Station Code,Station Name,Arrival time,Departure Time,Distance,Source Station,Source Station Name,Destination Station,Destination Station Name\n" +
                 "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.";
         BufferedReader input = new BufferedReader(new StringReader(oneLine));
-        TimeTable actual = myLoader.loadFromFile(input);
+        TimeTable actual = timeTableDao.loadFromFile(input);
 
         List<Train> expectedTrains = new ArrayList<>();
         Station expectedStation = new Station("CHENNAI CENT", "MAS");
@@ -32,12 +35,12 @@ class TimeTableLoaderTest {
         expectedStation.addTrainStop(expectedTrainStop);
         HashMap<String,Station> expectedStations = new HashMap<>();
         expectedStations.put("MAS",
-               expectedStation);
+                expectedStation);
         assertEquals(expectedStations,actual.getStations());
     }
     @Test
     void testLoadFromFileForMultipleStations() throws IOException {
-        TimeTableLoader myLoader = new TimeTableLoader();
+        TimeTableDao timeTableDao = new TimeTableDao();
         String twoEntries = "Train No,Train Name,SEQ,Station Code,Station Name,Arrival time,Departure Time,Distance,Source Station,Source Station Name,Destination Station,Destination Station Name\n" +
                 "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.\n" +
                 "2842,MAS SRC SPL,2,NLR,NELLORE,21:40:00,21:42:00,175,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.";
@@ -59,14 +62,14 @@ class TimeTableLoaderTest {
         expectedStation1.addTrainStop(expectedTrainStop1);
         expectedStation2.addTrainStop(expectedTrainStop2);
 
-        TimeTable actual =  myLoader.loadFromFile(input);
+        TimeTable actual =  timeTableDao.loadFromFile(input);
 
         assertEquals(expectedTrains, actual.getTrains());
         assertEquals(expectedStations,actual.getStations());
     }
     @Test
     void testLoadFromFileForMultipleStationsAndTrains() throws IOException {
-        TimeTableLoader myLoader = new TimeTableLoader();
+        TimeTableDao timeTableDao = new TimeTableDao();
         String twoTrains = "Train No,Train Name,SEQ,Station Code,Station Name,Arrival time,Departure Time,Distance,Source Station,Source Station Name,Destination Station,Destination Station Name\n" +
                 "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.\n" +
                 "2842,MAS SRC SPL,2,NLR,NELLORE,21:40:00,21:42:00,175,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.\n" +
@@ -79,7 +82,7 @@ class TimeTableLoaderTest {
                 new Station("CHENNAI CENT", "MAS"),
                 new Station("SANTRAGACHI JN.", "SRC"));
         Train expectedTrain2 = new Train("MAS-QLN SPEC","6041",
-               new Station("CHENNAI CENT", "MAS"),
+                new Station("CHENNAI CENT", "MAS"),
                 new Station("QUILON","QLN"));
         TrainStop expectedTrainStop1 = new TrainStop("18:20:00","18:20:00",expectedTrain,1,expectedStation1,0);
         TrainStop expectedTrainStop2 = new TrainStop("21:40:00","21:42:00",expectedTrain,2,expectedStation2,175);
@@ -93,7 +96,7 @@ class TimeTableLoaderTest {
         expectedStation2.addTrainStop(expectedTrainStop2);
         expectedStation1.addTrainStop(expectedTrainStop3);
 
-        TimeTable actual =  myLoader.loadFromFile(input);
+        TimeTable actual =  timeTableDao.loadFromFile(input);
 
         assertEquals(expectedTrains, actual.getTrains());
         assertEquals(expectedStations,actual.getStations());
