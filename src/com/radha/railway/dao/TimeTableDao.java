@@ -71,14 +71,13 @@ Step5:Add the currentTrain to the trains list.
 
 
     public TimeTable loadFromFile(File myFile) throws IOException {
-        timeTable = loadFromFile(new BufferedReader(new FileReader(myFile)));
-        return timeTable;
+        return loadFromFile(new BufferedReader(new FileReader(myFile)));
     }
 
     public TimeTable getTimeTable() throws IOException {
         if (timeTable == null) {
             File csv = new File("C:\\Users\\radha\\Downloads\\ChennaiCentralTimetable.csv");
-            loadFromFile(csv);
+            timeTable = loadFromFile(csv);
             //store in database
         }
         return timeTable;
