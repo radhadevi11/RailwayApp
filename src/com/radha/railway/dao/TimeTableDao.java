@@ -29,7 +29,7 @@ Step3:Create a TrainStop
 Step4:Add TrainStop to currentTrain
 Step5:Add the currentTrain to the trains list.
 */
-    public TimeTable loadFromFile(BufferedReader myReader) throws IOException {
+    public TimeTable loadFromFile(BufferedReader myReader,BufferedReader latLngReader) throws IOException {
         //similar to readFromFile
         //get the stations and trains
         ArrayList<Train> trains = new ArrayList<>();

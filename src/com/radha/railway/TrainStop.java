@@ -41,4 +41,13 @@ public class TrainStop {
     public long getDistance() {
         return distance;
     }
+
+    public boolean isBeforeStop(TrainStop otherStop){
+        if(this.getTrain().equals(otherStop.getTrain()) && this.getSequence() < otherStop.getSequence()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
