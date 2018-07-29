@@ -1,14 +1,17 @@
 
 package com.radha.railway;
 
+import com.radha.railway.service.LatLng;
+
 import java.util.ArrayList;
 
 public class Station{
     private String name;
     private String code;
     private ArrayList<TrainStop> trainStops = new ArrayList<>();
+    private LatLng latLng;
 
-    public Station(String name, String code) {
+    public Station(String name, String code,LatLng latLng) {
         this.name = name;
         this.code = code;
     }
@@ -27,6 +30,10 @@ public class Station{
 
     public void addTrainStop(TrainStop stop) {
         trainStops.add(stop);
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
     }
 
     public ArrayList<Train> getStoppingTrains() {
