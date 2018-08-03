@@ -4,6 +4,7 @@ import com.radha.railway.Station;
 import com.radha.railway.TimeTable;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
+import com.radha.railway.service.LatLng;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TimeTableDao {
     private TimeTable timeTable;
@@ -29,7 +31,7 @@ Step3:Create a TrainStop
 Step4:Add TrainStop to currentTrain
 Step5:Add the currentTrain to the trains list.
 */
-    public TimeTable loadFromFile(BufferedReader myReader,BufferedReader latLngReader) throws IOException {
+    public TimeTable loadFromFile(BufferedReader myReader,Map<String,LatLng> latLngMap) throws IOException {
         //similar to readFromFile
         //get the stations and trains
         ArrayList<Train> trains = new ArrayList<>();
@@ -43,7 +45,7 @@ Step5:Add the currentTrain to the trains list.
             int newSequence=Integer.parseInt(splitText[2]);
             long newDistance=Long.parseLong(splitText[7]);
             if(stations.get(splitText[3])==null) {
-                currentStation = new Station(splitText[4], splitText[3]);
+                currentStation = createStation(splitText[3], splitText[4],latLngMap);
                 stations.put(currentStation.getCode(), currentStation);
             }
             else{
@@ -51,8 +53,8 @@ Step5:Add the currentTrain to the trains list.
 
             }
             if(currentTrain == null || !currentTrain.getNumber().equals(splitText[0])){
-                Station sourceStation = new Station(splitText[9],splitText[8]);
-                Station destinationStation = new Station(splitText[11],splitText[10]);
+                Station sourceStation =createStation(splitText[8],splitText[9],latLngMap);
+                Station destinationStation = createStation(splitText[10],splitText[11],latLngMap);
                 currentTrain = new Train(splitText[1],splitText[0],
                         sourceStation,destinationStation);
                 trains.add(currentTrain);
@@ -69,17 +71,40 @@ Step5:Add the currentTrain to the trains list.
 
     }
 
+    private Station createStation(String code, String name, Map<String, LatLng> latLngMap) {
 
-    public TimeTable loadFromFile(File myFile) throws IOException {
-        return loadFromFile(new BufferedReader(new FileReader(myFile)));
+            return new Station(name, code, latLngMap.get(code));
+        }
+
+    public TimeTable loadFromFile(File myFile,Map<String,LatLng> latLngMap) throws IOException {
+        return loadFromFile(new BufferedReader(new FileReader(myFile)),latLngMap);
     }
 
     public TimeTable getTimeTable() throws IOException {
         if (timeTable == null) {
+            File csvLatLng = new File("C:\\Users\\radha\\Downloads\\StationLatitudeLongitude.csv");
+            BufferedReader reader = new BufferedReader((new FileReader(csvLatLng)));
+            Map<String,LatLng> latLngMap = loadLatLngFile(reader);
             File csv = new File("C:\\Users\\radha\\Downloads\\ChennaiCentralTimetable.csv");
-            timeTable = loadFromFile(csv);
+            timeTable = loadFromFile(csv, latLngMap);
             //store in database
         }
         return timeTable;
+    }
+    Map<String,LatLng> loadLatLngFile(BufferedReader myReader)throws IOException{
+        HashMap<String,LatLng> results = new HashMap<>();
+        myReader.readLine();
+        String readText;
+        while ((readText= myReader.readLine()) != null) {
+            String splitText[]= readText.split(",");
+            double latitude = Double.parseDouble(splitText[1]);
+            double longitude = Double.parseDouble(splitText[2]);
+           results.put(splitText[0],new LatLng(latitude,longitude));
+
+
+        }
+        return results;
+
+
     }
 }

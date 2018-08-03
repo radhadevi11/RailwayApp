@@ -11,7 +11,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StationServiceTest {
-    @Test
+   @Test
     public void testGetToStations(){
         StationService stationService = new StationService();
         ArrayList<Train> trains = new ArrayList<>();

@@ -14,6 +14,12 @@ public class Station{
     public Station(String name, String code,LatLng latLng) {
         this.name = name;
         this.code = code;
+        this.latLng = latLng;
+
+    }
+    public Station(String name, String code) {
+        this.name = name;
+        this.code = code;
     }
 
     public String getName() {
