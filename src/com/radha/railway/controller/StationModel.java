@@ -1,23 +1,24 @@
 
-package com.radha.railway;
+package com.radha.railway.controller;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
+import com.radha.railway.LatLng;
+import com.radha.railway.Train;
+import com.radha.railway.TrainStop;
 
 import java.util.ArrayList;
 
-public class Station{
+public class StationModel {
     private String name;
     private String code;
-    private ArrayList<TrainStop> trainStops = new ArrayList<>();
     private LatLng latLng;
 
-    public Station(String name, String code,LatLng latLng) {
+    public StationModel(String name, String code, LatLng latLng) {
         this.name = name;
         this.code = code;
         this.latLng = latLng;
 
     }
-    public Station(String name, String code) {
+    public StationModel(String name, String code) {
         this.name = name;
         this.code = code;
     }
@@ -30,28 +31,15 @@ public class Station{
         return code;
     }
 
-    public ArrayList<TrainStop> getTrainStops() {
-        return trainStops;
-    }
-
-    public void addTrainStop(TrainStop stop) {
-        trainStops.add(stop);
-    }
 
     public LatLng getLatLng() {
         return latLng;
     }
 
-    public ArrayList<Train> getStoppingTrains() {
-        ArrayList<Train> trains = new ArrayList<>();
-        for(TrainStop trainStop: trainStops ) {
-            trains.add(trainStop.getTrain());
-        }
-        return trains;
-    }
+
     public boolean equals(Object other) {
-        if (other instanceof Station) {
-            Station otherStation = (Station) other;
+        if (other instanceof StationModel) {
+            StationModel otherStation = (StationModel) other;
             if (this.getCode().equals(otherStation.getCode())) {
                 return true;
             }

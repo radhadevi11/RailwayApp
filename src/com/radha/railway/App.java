@@ -13,9 +13,8 @@ public class App {
         System.out.println("Where are you traveling from?? :");
         System.out.println("Enter the Station code from the list below......");
         Map<String, Station> fromStations = trainController.getFromStations();
-        for(String code: fromStations.keySet())
-        {
-            System.out.println("Code:"+code+ " stationName: "+fromStations.get(code));
+        for(Station fromStation : fromStations.values()) {
+            System.out.println(fromStation);
         }
         Scanner scanner = new Scanner(System.in);
         String fromStationCode = scanner.next();
@@ -23,10 +22,15 @@ public class App {
         Map<String, Station> destinationStations = trainController.getToStations(fromStationCode);
         System.out.println("Where are you traveling to??:");
         System.out.println("Enter the Station code from the list below......");
-        for (String code : destinationStations.keySet()){
-            System.out.println("Code:"+code+" stationName:"+destinationStations.get(code));
+        for(Station toStation : destinationStations.values()) {
+            System.out.println(toStation);
         }
         String toStationCode = scanner.next();
+        System.out.println("The possible trains to travel:");
+        ArrayList<Train> possibleTrains = trainController.getTrains(fromStationCode,toStationCode);
+        for(Train train : possibleTrains){
+            System.out.println(train);
+        }
         //TODO How to display only destination stations that are available for a fiven source station?
         //TODO How to make it easy to user to select the station??
         //TODO run the getDestinationName method from the main

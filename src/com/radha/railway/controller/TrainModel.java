@@ -1,20 +1,24 @@
-package com.radha.railway;
+package com.radha.railway.controller;
+
+import com.radha.railway.Station;
+import com.radha.railway.TrainStop;
 
 import java.util.ArrayList;
 
-public class Train {
+public class TrainModel {
     private String name;
     private String number;
-    private Station sourceStation;
-    private Station destinationStation;
-    private ArrayList<TrainStop> trainStops = new ArrayList<>();
+    private StationModel sourceStation;
+    private StationModel destinationStation;
+    private ArrayList<TrainStopModel> trainStops = new ArrayList<>();
 
 
-    public Train(String name, String number, Station sourceStation, Station destinationStation) {
+    public TrainModel(String name, String number, StationModel sourceStation, StationModel destinationStation,ArrayList<TrainStopModel> trainStops) {
         this.name = name;
         this.number = number;
         this.sourceStation = sourceStation;
         this.destinationStation = destinationStation;
+        this.trainStops = trainStops;
     }
 
     public String getName() {
@@ -25,35 +29,21 @@ public class Train {
         return number;
     }
 
-    public Station getSourceStation() {
+    public StationModel getSourceStation() {
         return sourceStation;
     }
 
-    public Station getDestinationStation() {
+    public StationModel getDestinationStation() {
         return destinationStation;
     }
 
-    public ArrayList<TrainStop> getTrainStops() {
+    public ArrayList<TrainStopModel> getTrainStops() {
         return trainStops;
     }
 
-    public void addTrainStop(TrainStop stop) {
-        trainStops.add(stop);
-    }
-    public ArrayList<Station> getStoppingStations(int sequence){
-         ArrayList<Station> stations = new ArrayList<>();
-         for(TrainStop currentStop : trainStops ) {
-             if(currentStop.getSequence() > sequence) {
-                 Station currentStation = currentStop.getStation();
-                 stations.add(currentStation);
-             }
-         }
-         return stations;
-    }
-
     public boolean equals(Object other) {
-        if (other instanceof Train) {
-            Train otherTrain = (Train) other;
+        if (other instanceof TrainModel) {
+            TrainModel otherTrain = (TrainModel) other;
             if (this.getNumber().equals(otherTrain.getNumber())) {
                 return true;
             }

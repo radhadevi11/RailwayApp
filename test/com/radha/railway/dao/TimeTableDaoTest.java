@@ -4,7 +4,7 @@ import com.radha.railway.Station;
 import com.radha.railway.TimeTable;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
-import com.radha.railway.service.LatLng;
+import com.radha.railway.LatLng;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -25,11 +25,12 @@ class TimeTableDaoTest {
                 "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.";
         BufferedReader input = new BufferedReader(new StringReader(oneLine));
         HashMap<String,LatLng> actualLatLng = new HashMap<>();
-        actualLatLng.put("MAS",new LatLng(10,20));
+        LatLng masLatLng = new LatLng(10, 20);
+        actualLatLng.put("MAS", masLatLng);
         actualLatLng.put("SRC",new LatLng(40,30));
 
         List<Train> expectedTrains = new ArrayList<>();
-        Station expectedStation = new Station("CHENNAI CENT", "MAS");
+        Station expectedStation = new Station("CHENNAI CENT", "MAS", masLatLng);
         Train expectedTrain = new Train("MAS SRC SPL", "2842",
                 new Station("CHENNAI CENT", "MAS"),
                 new Station("SANTRAGACHI JN.", "SRC"));

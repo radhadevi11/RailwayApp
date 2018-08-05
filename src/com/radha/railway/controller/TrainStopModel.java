@@ -1,17 +1,18 @@
-package com.radha.railway;
+package com.radha.railway.controller;
 
-public class TrainStop {
+import com.radha.railway.Station;
+import com.radha.railway.Train;
+
+public class TrainStopModel {
     private String arrivalTime;
     private String departureTime;
-    private Train train;
     private int sequence;
-    private Station station;
+    private StationModel station;
     private long distance;
 
-    public TrainStop(String arrivalTime, String departureTime, Train train, int sequence, Station station, long distance) {
+    public TrainStopModel(String arrivalTime, String departureTime,  int sequence, StationModel station, long distance) {
         this.arrivalTime = arrivalTime;
         this.departureTime = departureTime;
-        this.train = train;
         this.sequence = sequence;
         this.station = station;
         this.distance = distance;
@@ -26,15 +27,11 @@ public class TrainStop {
         return departureTime;
     }
 
-    public Train getTrain() {
-        return train;
-    }
-
     public int getSequence() {
         return sequence;
     }
 
-    public Station getStation() {
+    public StationModel getStation() {
         return station;
     }
 
@@ -42,20 +39,12 @@ public class TrainStop {
         return distance;
     }
 
-    public boolean isBeforeStop(TrainStop otherStop){
-        if(this.getTrain().equals(otherStop.getTrain()) && this.getSequence() < otherStop.getSequence()){
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+
     @Override
     public String toString() {
         return "TrainStop{" +
                 "arrivalTime='" + arrivalTime + '\'' +
                 ", departureTime='" + departureTime + '\'' +
-                ", train=" + train.getNumber() +
                 ", sequence=" + sequence +
                 ", station=" + station.getCode() +
                 ", distance=" + distance +

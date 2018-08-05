@@ -1,4 +1,4 @@
-package com.radha.railway.service;
+package com.radha.railway;
 
 public class LatLng {
     private double latitude;
@@ -29,5 +29,11 @@ public class LatLng {
         }
         return false;
     }
+
+    public String toString() {
+        return " Latitude:"+this.latitude+" Longitude:"+this.longitude;
+    }
+
+
 }
 

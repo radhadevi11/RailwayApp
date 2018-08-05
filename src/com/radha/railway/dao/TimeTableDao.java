@@ -4,12 +4,10 @@ import com.radha.railway.Station;
 import com.radha.railway.TimeTable;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
-import com.radha.railway.service.LatLng;
+import com.radha.railway.LatLng;
+import org.omg.CORBA.portable.InputStream;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,11 +80,12 @@ Step5:Add the currentTrain to the trains list.
 
     public TimeTable getTimeTable() throws IOException {
         if (timeTable == null) {
-            File csvLatLng = new File("C:\\Users\\radha\\Downloads\\StationLatitudeLongitude.csv");
-            BufferedReader reader = new BufferedReader((new FileReader(csvLatLng)));
-            Map<String,LatLng> latLngMap = loadLatLngFile(reader);
-            File csv = new File("C:\\Users\\radha\\Downloads\\ChennaiCentralTimetable.csv");
-            timeTable = loadFromFile(csv, latLngMap);
+            java.io.InputStream latLanStream = this.getClass().getResourceAsStream("/StationLatitudeLongitude.csv");
+            BufferedReader latLngReader = new BufferedReader((new InputStreamReader(latLanStream)));
+            Map<String,LatLng> latLngMap = loadLatLngFile(latLngReader);
+            java.io.InputStream timeTableStream = this.getClass().getResourceAsStream("/ChennaiCentralTimetable.csv");
+            BufferedReader timeTableReader = new BufferedReader(new InputStreamReader(timeTableStream));
+            timeTable = loadFromFile(timeTableReader, latLngMap);
             //store in database
         }
         return timeTable;
