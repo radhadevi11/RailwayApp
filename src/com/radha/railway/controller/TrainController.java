@@ -36,6 +36,7 @@ public class TrainController {
         }
         return toStationModels;
     }
+    //TODO Convert to List
     public List<TrainModel> getTrains(String fromStationCode,String toStationCode)throws IOException{
        ArrayList<Train> trains =  trainService.getTrains(fromStationCode,toStationCode);
        ArrayList<TrainModel> trainModels = new ArrayList<>();
