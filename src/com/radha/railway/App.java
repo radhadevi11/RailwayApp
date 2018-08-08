@@ -1,5 +1,6 @@
 package com.radha.railway;
 
+import com.radha.railway.controller.StationModel;
 import com.radha.railway.controller.TrainController;
 
 import java.io.*;
@@ -12,7 +13,7 @@ public class App {
 
         System.out.println("Where are you traveling from?? :");
         System.out.println("Enter the Station code from the list below......");
-        Map<String, Station> fromStations = trainController.getFromStations();
+        List<StationModel> fromStations = trainController.getFromStations();
         for(Station fromStation : fromStations.values()) {
             System.out.println(fromStation);
         }
