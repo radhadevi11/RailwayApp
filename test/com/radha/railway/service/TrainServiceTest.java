@@ -1,10 +1,6 @@
 package com.radha.railway.service;
 
-import com.radha.railway.Station;
-import com.radha.railway.TimeTable;
-import com.radha.railway.Train;
-import com.radha.railway.TrainStop;
-import com.radha.railway.service.TrainService;
+import com.radha.railway.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

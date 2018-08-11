@@ -2,6 +2,7 @@ package com.radha.railway;
 
 import com.radha.railway.controller.StationModel;
 import com.radha.railway.controller.TrainController;
+import com.radha.railway.controller.TrainModel;
 
 import java.io.*;
 import java.util.*;
@@ -14,22 +15,22 @@ public class App {
         System.out.println("Where are you traveling from?? :");
         System.out.println("Enter the Station code from the list below......");
         List<StationModel> fromStations = trainController.getFromStations();
-        for(Station fromStation : fromStations.values()) {
+        for(StationModel fromStation : fromStations) {
             System.out.println(fromStation);
         }
         Scanner scanner = new Scanner(System.in);
         String fromStationCode = scanner.next();
         System.out.println("Getting to stations for"  + fromStationCode);
-        Map<String, Station> destinationStations = trainController.getToStations(fromStationCode);
+        List< StationModel> destinationStations = trainController.getToStations(fromStationCode);
         System.out.println("Where are you traveling to??:");
         System.out.println("Enter the Station code from the list below......");
-        for(Station toStation : destinationStations.values()) {
+        for(StationModel toStation : destinationStations) {
             System.out.println(toStation);
         }
         String toStationCode = scanner.next();
         System.out.println("The possible trains to travel:");
-        ArrayList<Train> possibleTrains = trainController.getTrains(fromStationCode,toStationCode);
-        for(Train train : possibleTrains){
+        List<TrainModel> possibleTrains = trainController.getTrains(fromStationCode,toStationCode);
+        for(TrainModel train : possibleTrains){
             System.out.println(train);
         }
         //TODO How to display only destination stations that are available for a fiven source station?
