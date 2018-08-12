@@ -4,16 +4,17 @@ import com.radha.railway.Station;
 import com.radha.railway.TrainStop;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrainModel {
     private String name;
     private String number;
     private StationModel sourceStation;
     private StationModel destinationStation;
-    private ArrayList<TrainStopModel> trainStops = new ArrayList<>();
+    private List<TrainStopModel> trainStops;
 
 
-    public TrainModel(String name, String number, StationModel sourceStation, StationModel destinationStation,ArrayList<TrainStopModel> trainStops) {
+    public TrainModel(String name, String number, StationModel sourceStation, StationModel destinationStation,List<TrainStopModel> trainStops) {
         this.name = name;
         this.number = number;
         this.sourceStation = sourceStation;
@@ -37,7 +38,7 @@ public class TrainModel {
         return destinationStation;
     }
 
-    public ArrayList<TrainStopModel> getTrainStops() {
+    public List<TrainStopModel> getTrainStops() {
         return trainStops;
     }
 

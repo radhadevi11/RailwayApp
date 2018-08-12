@@ -3,6 +3,7 @@ package com.radha.railway.controller;
 import com.radha.railway.Station;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
+import com.radha.railway.service.NoSuchStationException;
 import com.radha.railway.service.StationService;
 import com.radha.railway.service.TrainService;
 
@@ -19,7 +20,6 @@ public class TrainController {
     public List<StationModel> getFromStations() throws IOException {
         Map<String, Station> fromStations = stationService.getFromStations();
         return convertToStationModels(fromStations.values());
-        //TODO convrt to List<StationModel>
 
     }
 
@@ -41,7 +41,6 @@ public class TrainController {
         return new StationModel(station.getName(),station.getCode(),station.getLatLng());
     }
 
-    //TODO Convert to List
     public List<TrainModel> getTrains(String fromStationCode,String toStationCode)throws IOException{
        ArrayList<Train> trains =  trainService.getTrains(fromStationCode,toStationCode);
        ArrayList<TrainModel> trainModels = new ArrayList<>();
@@ -58,22 +57,28 @@ public class TrainController {
         Station destinationStation = train.getDestinationStation();
         StationModel destinationStationModel = convertToStationModel(destinationStation);
         ArrayList<TrainStop> trainStops = train.getTrainStops();
-        ArrayList<TrainStopModel> trainStopModels = new ArrayList<>();
-        for(TrainStop trainStop :trainStops) {
-            Station station = trainStop.getStation();
-            StationModel stationModel = convertToStationModel(station);
-            TrainStopModel trainStopModel = new TrainStopModel(trainStop.getArrivalTime(),trainStop.getDepartureTime(),trainStop.getSequence(),stationModel,trainStop.getDistance());
-            trainStopModels.add(trainStopModel);
-        }
-        return new TrainModel(train.getName(),train.getNumber(),sourceStationModel,destinationStationModel,trainStopModels));
+        List<TrainStopModel> trainStopModels = convertToTrainStopModels(trainStops);
+        return new TrainModel(train.getName(),train.getNumber(),sourceStationModel,destinationStationModel,trainStopModels);
+
 
     }
 
     private TrainStopModel convertToTrainStopModel(TrainStop trainStop) {
+        Station station = trainStop.getStation();
+        StationModel stationModel = convertToStationModel(station);
+       return new TrainStopModel(trainStop.getArrivalTime(),trainStop.getDepartureTime(),trainStop.getSequence(),stationModel,trainStop.getDistance());
+
 
     }
 
-    private List<TrainStopModel> convertToTrainStopModel(List<TrainStop> trainStop) {
+    private List<TrainStopModel> convertToTrainStopModels(List<TrainStop> trainStops) {
+        ArrayList<TrainStopModel> trainStopModels = new ArrayList<>();
+        for(TrainStop trainStop :trainStops) {
+            TrainStopModel trainStopModel = convertToTrainStopModel(trainStop);
+            trainStopModels.add(trainStopModel);
+        }
+        return trainStopModels;
+
 
     }
 }

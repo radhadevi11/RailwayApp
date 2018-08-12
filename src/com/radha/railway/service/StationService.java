@@ -32,6 +32,9 @@ public class StationService {
         Map<String, Station> destinationStations = new HashMap();
         Map<String, Station> stations = timeTable.getStations();
         Station fromStation = stations.get(fromStationCode);
+        if (fromStation == null) {
+            return destinationStations;
+        }
         for (TrainStop trainStop : fromStation.getTrainStops()) {
             int sequence = trainStop.getSequence();
             Train stoppingTrain = trainStop.getTrain();
