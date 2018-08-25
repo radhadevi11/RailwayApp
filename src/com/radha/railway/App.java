@@ -3,6 +3,8 @@ package com.radha.railway;
 import com.radha.railway.controller.StationModel;
 import com.radha.railway.controller.TrainController;
 import com.radha.railway.controller.TrainModel;
+import com.radha.railway.service.NoSuchFromStationException;
+import com.radha.railway.service.NoSuchToStationException;
 
 import java.io.*;
 import java.util.*;
@@ -11,25 +13,55 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         TrainController trainController = new TrainController();
-
-        System.out.println("Where are you traveling from?? :");
-        System.out.println("Enter the Station code from the list below......");
-        List<StationModel> fromStations = trainController.getFromStations();
-        for(StationModel fromStation : fromStations) {
-            System.out.println(fromStation);
-        }
         Scanner scanner = new Scanner(System.in);
-        String fromStationCode = scanner.next();
-        System.out.println("Getting to stations for"  + fromStationCode);
-        List< StationModel> destinationStations = trainController.getToStations(fromStationCode);
-        System.out.println("Where are you traveling to??:");
-        System.out.println("Enter the Station code from the list below......");
-        for(StationModel toStation : destinationStations) {
-            System.out.println(toStation);
-        }
-        String toStationCode = scanner.next();
-        System.out.println("The possible trains to travel:");
-        List<TrainModel> possibleTrains = trainController.getTrains(fromStationCode,toStationCode);
+
+        boolean fromStationValid = true;
+        boolean toStationValid = true;
+        List<TrainModel> possibleTrains = null;
+        do  {
+            List<StationModel> destinationStations = null;
+            String fromStationCode;
+            do {
+                System.out.println("Where are you traveling from?? :");
+                System.out.println("Enter the Station code from the list below......");
+                List<StationModel> fromStations = trainController.getFromStations();
+                for(StationModel fromStation : fromStations) {
+                    System.out.println(fromStation);
+                }
+                fromStationCode = scanner.next();
+                System.out.println("Getting to stations for" + fromStationCode);
+                try {
+                    destinationStations = trainController.getToStations(fromStationCode);
+                } catch (NoSuchFromStationException e) {
+                    e.printStackTrace();
+                    System.out.println("The from station you entered is invalid. Try again.");
+                    fromStationValid = false;
+                }
+            }while (!fromStationValid);
+
+           do {
+               System.out.println("Where are you traveling to??:");
+               System.out.println("Enter the Station code from the list below......");
+               for (StationModel toStation : destinationStations) {
+                   System.out.println(toStation);
+               }
+                String toStationCode = scanner.next();
+                System.out.println("The possible trains to travel:");
+
+                try {
+                    possibleTrains = trainController.getTrains(fromStationCode, toStationCode);
+                } catch (NoSuchFromStationException e) {
+                    e.printStackTrace();
+                    System.out.println("The from station you entered is invalid. Try again.");
+                    fromStationValid = false;
+                } catch(NoSuchToStationException e) {
+                    e.printStackTrace();
+                    System.out.println("The to station you entered is invalid. Try again.");
+                    toStationValid = false;
+                }
+            }  while (!toStationValid);
+
+        } while (!fromStationValid);
         for(TrainModel train : possibleTrains){
             System.out.println(train);
         }

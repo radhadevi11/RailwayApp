@@ -3,7 +3,8 @@ package com.radha.railway.controller;
 import com.radha.railway.Station;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
-import com.radha.railway.service.NoSuchStationException;
+import com.radha.railway.service.NoSuchFromStationException;
+import com.radha.railway.service.NoSuchToStationException;
 import com.radha.railway.service.StationService;
 import com.radha.railway.service.TrainService;
 
@@ -23,7 +24,7 @@ public class TrainController {
 
     }
 
-    public List<StationModel> getToStations(String fromStationCode) throws IOException {
+    public List<StationModel> getToStations(String fromStationCode) throws IOException, NoSuchFromStationException {
         Map<String, Station> toStations =stationService.getToStations(fromStationCode);
         return convertToStationModels(toStations.values());
     }
@@ -41,7 +42,7 @@ public class TrainController {
         return new StationModel(station.getName(),station.getCode(),station.getLatLng());
     }
 
-    public List<TrainModel> getTrains(String fromStationCode,String toStationCode)throws IOException{
+    public List<TrainModel> getTrains(String fromStationCode,String toStationCode) throws IOException, NoSuchFromStationException, NoSuchToStationException {
        ArrayList<Train> trains =  trainService.getTrains(fromStationCode,toStationCode);
        ArrayList<TrainModel> trainModels = new ArrayList<>();
        for(Train train : trains){

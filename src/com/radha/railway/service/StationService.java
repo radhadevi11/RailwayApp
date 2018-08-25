@@ -14,11 +14,11 @@ import java.util.Map;
 
 public class StationService {
 
-    public Map<String, Station> getToStations(String fromStationCode) throws IOException {
+    public Map<String, Station> getToStations(String fromStationCode) throws IOException, NoSuchFromStationException {
         TimeTable timeTable = DaoFactory.getTimeTableDao().getTimeTable();
         return getToStations(fromStationCode, timeTable);
     }
-    Map<String, Station> getToStations(String fromStationCode, TimeTable timeTable) {
+    Map<String, Station> getToStations(String fromStationCode, TimeTable timeTable) throws NoSuchFromStationException {
           /* Algorithm:
         Step1:Declare a TimeTable object as timeTable and a map as destinationStations.
         Step2:Get the fromStation object from the stations map in the timeTable using the fromStationCode as key.
@@ -33,7 +33,7 @@ public class StationService {
         Map<String, Station> stations = timeTable.getStations();
         Station fromStation = stations.get(fromStationCode);
         if (fromStation == null) {
-            return destinationStations;
+            throw new NoSuchFromStationException("");
         }
         for (TrainStop trainStop : fromStation.getTrainStops()) {
             int sequence = trainStop.getSequence();

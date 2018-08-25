@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class TrainService {
-    public ArrayList<Train> getTrains(String fromStationCode,String toStationCode) throws IOException{
+    public ArrayList<Train> getTrains(String fromStationCode,String toStationCode) throws IOException, NoSuchFromStationException, NoSuchToStationException {
         TimeTable timeTable = DaoFactory.getTimeTableDao().getTimeTable();
         return getTrains(fromStationCode,toStationCode, timeTable);
 
     }
 
-    ArrayList<Train> getTrains(String fromStationCode,String toStationCode, TimeTable timeTable) {
+    ArrayList<Train> getTrains(String fromStationCode,String toStationCode, TimeTable timeTable) throws NoSuchFromStationException, NoSuchToStationException {
        /* step 0:Declare a List as resultsList.
                 Step 1: Get the fromStation object from the from station code using the stations map.
                 Step 2:Get the list of trainstops(fromStationStops) object from the fromstation object.
@@ -28,19 +28,26 @@ public class TrainService {
             i)if the fromsStationStop's train is equal toStationStop's train and fromsStationStop's sequenceNo is less than toStationStop's sequenceNo   then
         ii)Get the corresponding Train from the trainStopingAtFromStation  and add it to the resultsList.*/
 
-       ArrayList<Train> resultTrains = new ArrayList<>();
+        ArrayList<Train> resultTrains = new ArrayList<>();
         Map<String, Station> stations = timeTable.getStations();
         Station fromStation = stations.get(fromStationCode);
+        if(fromStation == null){
+            throw  new NoSuchFromStationException("The given fromStation code "+fromStationCode+" is not found");
+        }
         ArrayList<TrainStop> fromStationStops = fromStation.getTrainStops();
         Station toStation = stations.get(toStationCode);
+        if(toStation == null){
+            throw  new NoSuchToStationException("The given toStation code "+toStationCode+" is not found");
+        }
         ArrayList<TrainStop> toStationStops = toStation.getTrainStops();
-        for(TrainStop fromStationStop : fromStationStops){
-            for(TrainStop toStationStop : toStationStops){
-                if(fromStationStop.isBeforeStop(toStationStop)){
+        for (TrainStop fromStationStop : fromStationStops) {
+            for (TrainStop toStationStop : toStationStops) {
+                if (fromStationStop.isBeforeStop(toStationStop)) {
                     resultTrains.add(fromStationStop.getTrain());
                 }
             }
         }
-         return resultTrains;
+
+        return resultTrains;
     }
 }
