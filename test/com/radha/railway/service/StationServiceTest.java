@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StationServiceTest {
    @Test
-    public void testGetToStations(){
+    public void testGetToStations() throws NoSuchFromStationException {
         StationService stationService = new StationService();
         ArrayList<Train> trains = new ArrayList<>();
         Station fromStation = new Station("Erode","ERD");
@@ -55,7 +55,7 @@ class StationServiceTest {
 
     }
     @Test
-    public void testGetToStationsforMultipleTrains(){
+    public void testGetToStationsforMultipleTrains() throws NoSuchFromStationException {
         StationService stationService = new StationService();
         ArrayList<Train> trains = new ArrayList<>();
         Station erodeStation = new Station("Erode","ERD");

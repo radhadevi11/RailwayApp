@@ -3,6 +3,7 @@ package com.radha.railway.service;
 import com.radha.railway.*;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TrainServiceTest {
     @Test
-    public void testGetTrains() {
+    public void testGetTrains() throws IOException, NoSuchToStationException, NoSuchFromStationException {
         String fromStationCode = "ERD";
         String toStationCode = "MAS";
         TrainService trainService = new TrainService();
@@ -87,7 +88,7 @@ class TrainServiceTest {
 
     }
     @Test
-    public void getTrainsForDifferentSequence(){
+    public void getTrainsForDifferentSequence() throws IOException, NoSuchToStationException, NoSuchFromStationException {
         String fromStationCode = "ERD";
         String toStationCode = "MAS";
         TrainService trainService = new TrainService();
