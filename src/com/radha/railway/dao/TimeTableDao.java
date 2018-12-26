@@ -74,13 +74,10 @@ Step5:Add the currentTrain to the trains list.
             return new Station(name, code, latLngMap.get(code));
         }
 
-    public TimeTable loadFromFile(File myFile,Map<String,LatLng> latLngMap) throws IOException {
-        return loadFromFile(new BufferedReader(new FileReader(myFile)),latLngMap);
-    }
 
     public TimeTable getTimeTable() throws IOException {
         if (timeTable == null) {
-            InputStream latLanStream = this.getClass().getResourceAsStream("/StationLatitudeLongitude.csv");
+            InputStream latLanStream = this.getClass().getResourceAsStream("/StationLatitudeLongitude.csv");//search the csv file in the class path
             BufferedReader latLngReader = new BufferedReader((new InputStreamReader(latLanStream)));
             Map<String,LatLng> latLngMap = loadLatLngFile(latLngReader);
             InputStream timeTableStream = this.getClass().getResourceAsStream("/ChennaiCentralTimetable.csv");
