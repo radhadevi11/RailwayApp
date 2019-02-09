@@ -3,6 +3,8 @@ package com.radha.railway.dao;
 import com.radha.railway.Station;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class StationDaoImplTest {
@@ -30,7 +32,7 @@ class StationDaoImplTest {
     }
 
     @Test
-    public void testGetForWronglStation(){
+    public void testGetForWrongStation(){
 
         StationDaoImpl stationDao = new StationDaoImpl();
 
@@ -38,6 +40,30 @@ class StationDaoImplTest {
 
         assertNull(actual);
 
+    }
+    @Test
+    public void testGetAll(){
+        StationDaoImpl stationDao = new StationDaoImpl();
+
+        List<Station> stations = stationDao.getAll();
+//        assertTrue(isStationAvailable(stations));
+
+
+        int actual = stations.size();
+
+
+        assertEquals(466,actual);
+
+    }
+
+    private boolean isStationAvailable(List<Station> stations){
+        for(Station station : stations){
+            if(station.getCode().equals("AB")){
+               return true;
+            }
+
+        }
+        return false;
     }
 
 }
