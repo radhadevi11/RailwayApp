@@ -21,6 +21,7 @@ public class StationDaoImpl implements Dao<Station>{
         createSaveStatement();
         createGetStatement();
         createGetAllStatement();
+        createGetStationByCodeStatement();
     }
 
 
@@ -159,7 +160,6 @@ public class StationDaoImpl implements Dao<Station>{
 
          */
         try {
-            Station station;
             getStationStatementByStationCode.setString(1, stationCode);
             ResultSet queryResult = getStationStatementByStationCode.executeQuery();
             return processQueryForGetStation(queryResult);
@@ -179,8 +179,9 @@ public class StationDaoImpl implements Dao<Station>{
 
     private  void  createGetStationByCodeStatement(){
         try {
-            getStationStatementByStationCode = connection.prepareStatement("select station.*,\n" +
-                    "       train.*,\n" +
+            getStationStatementByStationCode = connection.prepareStatement("select station.station_id,station.station_name,station.station_code,\n" +
+                    "       train.train_id,train.train_number,train.train_name,\n" +
+                    "       train_stop.arrival_time,train_stop.departure_time,train_stop.sequence,\n" +
                     "       source_station.station_code as source_station_code,source_station.station_name as source_station_name,\n" +
                     "       destination_station.station_code as destination_station_code,destination_station.station_name as destination_station_name\n" +
                     "from station\n" +
@@ -212,7 +213,7 @@ public class StationDaoImpl implements Dao<Station>{
             return null;
 
         }
-        Station station = new Station(resultSet.getString("station_code"),resultSet.getString("station_name"));
+        Station station = new Station(resultSet.getString("station_name"),resultSet.getString("station_code"));
 
         do{
             Train train = createTrain(resultSet);

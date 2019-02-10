@@ -1,6 +1,8 @@
 package com.radha.railway.dao;
 
 import com.radha.railway.Station;
+import com.radha.railway.Train;
+import com.radha.railway.TrainStop;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -64,6 +66,29 @@ class StationDaoImplTest {
 
         }
         return false;
+    }
+
+    @Test
+
+    public  void testGetStation(){
+
+        StationDaoImpl stationDao = new StationDaoImpl();
+
+        Station actual = stationDao.getStation("MAS");
+
+        Station expected = new Station("CHENNAI CENT","MAS");
+
+        assertEquals(expected,actual);
+        assertEquals(78,actual.getTrainStops().size());
+
+        TrainStop expectedTrainStop = new TrainStop(null,
+                null,
+                new Train(null,"22611",null,null),
+                0,
+                new Station(null,"MAS"),
+                5);
+        assertTrue(actual.getTrainStops().contains(expectedTrainStop));
+
     }
 
 }

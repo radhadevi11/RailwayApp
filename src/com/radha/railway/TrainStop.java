@@ -61,4 +61,12 @@ public class TrainStop {
                 ", distance=" + distance +
                 '}';
     }
+
+    public boolean equals(Object other){
+        if(other instanceof TrainStop){
+            return (this.getTrain().equals(((TrainStop) other).getTrain())
+                    && this.getStation().equals(((TrainStop) other).getStation()));
+        }
+        return false;
+    }
 }
