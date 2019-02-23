@@ -3,6 +3,7 @@ package com.radha.railway.dao;
 import com.radha.railway.Station;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
+import org.junit.jupiter.api.Test.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -44,6 +45,7 @@ class StationDaoImplTest {
 
     }
     @Test
+
     public void testGetAll(){
         StationDaoImpl stationDao = new StationDaoImpl();
 
@@ -54,7 +56,7 @@ class StationDaoImplTest {
         int actual = stations.size();
 
 
-        assertEquals(466,actual);
+        assertEquals(467,actual);
 
     }
 
