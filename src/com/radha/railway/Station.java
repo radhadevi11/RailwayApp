@@ -1,11 +1,10 @@
 
 package com.radha.railway;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.util.ArrayList;
 
 public class Station{
+    private Integer id;
     private String name;
     private String code;
     private ArrayList<TrainStop> trainStops = new ArrayList<>();
@@ -17,9 +16,19 @@ public class Station{
         this.latLng = latLng;
 
     }
+
     public Station(String name, String code) {
+        this(null, name, code);
+    }
+
+    public Station(Integer id, String name, String code) {
+        this.id = id;
         this.name = name;
         this.code = code;
+    }
+
+    public Station(Integer id){
+        this.id = id;
     }
 
     public String getName() {
@@ -63,5 +72,13 @@ public class Station{
     }
     public String toString(){
         return "StationName:"+this.name+" StationCode:"+this.code+this.latLng;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

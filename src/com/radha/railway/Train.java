@@ -3,6 +3,7 @@ package com.radha.railway;
 import java.util.ArrayList;
 
 public class Train {
+    private Integer id;
     private String name;
     private String number;
     private Station sourceStation;
@@ -11,6 +12,11 @@ public class Train {
 
 
     public Train(String name, String number, Station sourceStation, Station destinationStation) {
+        this(null, name, number, sourceStation, destinationStation);
+    }
+
+    public Train(Integer id, String name, String number, Station sourceStation, Station destinationStation) {
+        this.id = id;
         this.name = name;
         this.number = number;
         this.sourceStation = sourceStation;
@@ -73,5 +79,13 @@ public class Train {
                 ", destinationStation=" + destinationStation +
                 ", trainStops=" + trainStops +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

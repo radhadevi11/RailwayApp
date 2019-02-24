@@ -75,39 +75,7 @@ public class StationDaoImpl extends AbstractDao<Station>{
     }
 
 
-        public List<Station> getAll(){
-        /*Step 1:create a list of station called stations
-          Step 2:Execute a sql query for select *
-          step3;store it in the stations
-          step4:return the stations
 
-         */
-            List<Station> stations = new ArrayList<>();
-            try {
-
-                ResultSet resultSet = getAllStatement.executeQuery();
-              /* if(!resultSet.next()){
-                    return stations;
-                }*/
-                while (resultSet.next()) {
-                    String stationName = resultSet.getString("station_name");
-                    String stationCode = resultSet.getString("station_code");
-                    System.out.println(resultSet.getInt("station_id"));
-                    stations.add(new Station(stationCode, stationName));
-                }
-                return stations;
-
-            } catch (SQLException e) {
-                throw new RuntimeException("can not get all stations",e);
-            } finally {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
     private void createGetAllStatement() {
         try {
             getAllStatement = connection.prepareStatement("select * from station");
@@ -217,6 +185,7 @@ public class StationDaoImpl extends AbstractDao<Station>{
         return new Station(stationName,stationCode);
     }
 
+
     public PreparedStatement getSaveStatement(Station station) throws SQLException {
 
         saveStatement.setString(1,station.getName());//1=>replacement position of question mark ,station.getName()=>actual station name
@@ -225,4 +194,19 @@ public class StationDaoImpl extends AbstractDao<Station>{
         return saveStatement;
     }
 
+    @Override
+    public Station getEntity (ResultSet resultSet) throws SQLException {
+
+            String stationName = resultSet.getString("station_name");
+            String stationCode = resultSet.getString("station_code");
+            System.out.println(resultSet.getInt("station_id"));
+            return new Station(stationCode, stationName);
+
+
+    }
+
+    @Override
+    public PreparedStatement getGetAllStatement() {
+        return getAllStatement;
+    }
 }

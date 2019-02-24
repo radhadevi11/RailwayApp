@@ -1,6 +1,7 @@
 package com.radha.railway;
 
 public class TrainStop {
+    private Integer id;
     private String arrivalTime;
     private String departureTime;
     private Train train;
@@ -9,6 +10,11 @@ public class TrainStop {
     private long distance;
 
     public TrainStop(String arrivalTime, String departureTime, Train train, int sequence, Station station, long distance) {
+        this(null, arrivalTime, departureTime, train, sequence, station, distance);
+    }
+
+    public TrainStop(Integer id, String arrivalTime, String departureTime, Train train, int sequence, Station station, long distance) {
+        this.id = id;
         this.arrivalTime = arrivalTime;
         this.departureTime = departureTime;
         this.train = train;
@@ -68,5 +74,13 @@ public class TrainStop {
                     && this.getStation().equals(((TrainStop) other).getStation()));
         }
         return false;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

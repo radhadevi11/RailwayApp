@@ -1,9 +1,13 @@
 package com.radha.railway.dao;
 
+import com.radha.railway.Station;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 
@@ -47,7 +51,47 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     public abstract PreparedStatement getSaveStatement(T t) throws SQLException;
 
+    @Override
+    public List<T> getAll() {
+         /*Step 1:create a list of station called stations
+          Step 2:Execute a sql query for select *
+          step3;store it in the stations
+          step4:return the stations
+
+         */
+        List<T> entities = new ArrayList<>();
+        try {
+
+            ResultSet resultSet = getGetAllStatement().executeQuery();
+              /* if(!resultSet.next()){
+                    return stations;
+                }*/
+            while (resultSet.next()) {
+                entities.add(getEntity(resultSet));
+            }
+            return entities;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("can not get all stations",e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+    public abstract PreparedStatement getGetAllStatement();
+
+    public abstract T getEntity(ResultSet resultSet) throws SQLException;
+
+
+
     public Connection getConnection() {
         return connection;
     }
+
 }
