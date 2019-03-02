@@ -88,7 +88,41 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     public abstract T getEntity(ResultSet resultSet) throws SQLException;
 
+    @Override
+    public T get(int id){
+        /*Steps:
+        i)Declare 2 String variable called stationName and stationCode
+        ii)execute a sql query for select
+        iii)get the station name and store it in the stationName
+        iv)get the station code and store it in the stationCode
+        iv)return a new Station object with the argument of stationCode and stationName
 
+         */
+
+        try {
+
+
+            getGetStatement().setInt(1, id);//set the id for the select query here 1 is the parameterIndex
+            ResultSet resultSet = getGetStatement().executeQuery();
+            if(!resultSet.next()){
+                return null;
+            }
+            return getEntity(resultSet);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("can not get entity with id of " + id, e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+    public abstract PreparedStatement getGetStatement();
 
     public Connection getConnection() {
         return connection;

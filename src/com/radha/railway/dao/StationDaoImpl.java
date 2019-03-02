@@ -31,40 +31,6 @@ public class StationDaoImpl extends AbstractDao<Station>{
         }
     }
 
-    public Station get(int id) {
-        /*Steps:
-        i)Declare 2 String variable called stationName and stationCode
-        ii)execute a sql query for select
-        iii)get the station name and store it in the stationName
-        iv)get the station code and store it in the stationCode
-        iv)return a new Station object with the argument of stationCode and stationName
-
-         */
-
-        try {
-
-
-            getStatement.setInt(1, id);//set the id for the select query here 1 is the parameterIndex
-            ResultSet resultSet = getStatement.executeQuery();
-            if(!resultSet.next()){
-                return null;
-            }
-            String stationName = resultSet.getString("station_name");
-            String stationCode = resultSet.getString("station_code");
-            return new Station(stationCode, stationName);
-
-        } catch (SQLException e) {
-            throw new RuntimeException("can not get station with id of " + id, e);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    }
 
     private  void createGetStatement() {
         try {
@@ -208,5 +174,10 @@ public class StationDaoImpl extends AbstractDao<Station>{
     @Override
     public PreparedStatement getGetAllStatement() {
         return getAllStatement;
+    }
+
+    @Override
+    public  PreparedStatement getGetStatement(){
+        return getStatement;
     }
 }

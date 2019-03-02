@@ -14,10 +14,20 @@ public class TrainDaoImpl extends AbstractDao<Train> {
 
     private PreparedStatement saveStatement;
     private PreparedStatement getAllStatement;
+    private PreparedStatement getStatement;
 
     public TrainDaoImpl(){
        createSaveStatement();
        createGetAllStatement();
+       createGetStatement();
+    }
+
+    private void createGetStatement() {
+        try{
+            getStatement = connection.prepareStatement("select * from train where train_id=?");
+        }catch (SQLException e){
+            throw new RuntimeException("can not create PreapredStatement to get train", e);
+        }
     }
 
     private void createGetAllStatement() {
@@ -51,10 +61,6 @@ public class TrainDaoImpl extends AbstractDao<Train> {
         return saveStatement;
     }
 
-    @Override
-    public Train get(int key) {
-        return null;
-    }
 
     @Override
     public PreparedStatement getGetAllStatement() {
@@ -73,4 +79,12 @@ public class TrainDaoImpl extends AbstractDao<Train> {
                         new Station(destinationStationId));
 
     }
+
+    @Override
+    public PreparedStatement getGetStatement(){
+        return getStatement;
+
+    }
+
+
 }
