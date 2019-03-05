@@ -7,6 +7,7 @@ import com.radha.railway.TrainStop;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class TrainStopDaoImpl extends AbstractDao<TrainStop> {
 
@@ -25,7 +26,8 @@ public class TrainStopDaoImpl extends AbstractDao<TrainStop> {
     private void createSaveStatement() {
         try {
             saveStatement = connection.prepareStatement("insert into train_stop" +
-                    "(train_id,station_id,sequence,arrival_time,departure_time)values(?,?,?,?,?)");
+                    "(train_id,station_id,sequence,arrival_time,departure_time)" +
+                    "values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         }
         catch (SQLException e){
             throw new RuntimeException("can not save trainStop",e);
@@ -47,7 +49,7 @@ public class TrainStopDaoImpl extends AbstractDao<TrainStop> {
         try {
             getStatement = connection.prepareStatement("select station.station_id,station.station_name,station.station_code,\n" +
                     "       train.train_id,train.train_number,train.train_name,\n" +
-                    "       train_stop.arrival_time,train_stop.departure_time,train_stop.sequence,\n" +
+                    "       train_stop.arrival_time,train_stop.departure_time,train_stop.sequence,train_stop.train_stop_id,\n" +
                     "       source_station.station_code as source_station_code,source_station.station_name as source_station_name,\n" +
                     "       destination_station.station_code as destination_station_code,destination_station.station_name as destination_station_name\n" +
                     "from train_stop\n" +

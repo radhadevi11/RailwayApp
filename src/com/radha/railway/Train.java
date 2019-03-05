@@ -23,6 +23,10 @@ public class Train {
         this.destinationStation = destinationStation;
     }
 
+    public Train(Integer id){
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
