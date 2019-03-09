@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoaderService {
+   private StationDaoImpl stationDao = new StationDaoImpl();
+   private TrainDaoImpl trainDao = new TrainDaoImpl();
+   private TrainStopDaoImpl trainStopDao = new TrainStopDaoImpl();
+
 
     /*Algorithm
 Chennai - santragachi(1-12)(each station of the train is a train stop)
@@ -44,10 +48,7 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
         Map<String,Train> trains = new HashMap<>();
         Station currentStation = null;
         Train currentTrain = null ;
-        StationDaoImpl stationDao = new StationDaoImpl();
-        TrainDaoImpl trainDao = new TrainDaoImpl();
-        TrainStopDaoImpl trainStopDao = new TrainStopDaoImpl();
-        String readText;
+               String readText;
         myReader.readLine();
         while ((readText= myReader.readLine()) != null) {
             String splitText[] = readText.split(",");
@@ -56,13 +57,15 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
             int newSequence = Integer.parseInt(splitText[2]);
             long newDistance=Long.parseLong(splitText[7]);
 
-            if(! stations.containsKey(stationCode)){
-              saveStation(splitText,stationDao,currentStation);
-              stations.put(stationCode,currentStation);
-            }
-            if(!trains.containsKey(trainNo)){
 
-                saveTrain(splitText,trainDao,currentTrain);
+                currentStation = saveStation(splitText[4], splitText[3],stations);
+
+            if(! trains.containsKey(trainNo)){
+               //to check whether this station is available in the station table
+                Station sourceStation = saveStation(splitText[9],splitText[8],stations);
+                Station destinationStation = saveStation(splitText[11],splitText[10],stations);
+
+                currentTrain = saveTrain(splitText[1],trainNo,sourceStation,destinationStation);
                 trains.put(trainNo,currentTrain);
 
             }
@@ -74,23 +77,21 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
         }
     }
 
-    private Train createTrain(String trainNo, String trainName, Station sourceSation, Station destinationStation) {
-       return new Train(trainNo,trainName,sourceSation,destinationStation);
+    private Station saveStation(String stationName, String stationCode, Map<String, Station> stations){
+        Station currentStation = stations.get(stationCode);
+        if (! stations.containsKey(stationCode) ) {
+            currentStation = new Station(stationName, stationCode);
+            stationDao.save(currentStation);
+            stations.put(stationCode,currentStation);
+        }
+        return currentStation;
     }
 
-    private Station createStation(String stationName, String stationCode) {
-        return new Station(stationName,stationCode);
-    }
-
-    private void saveStation(String[] splitText,StationDaoImpl stationDao,Station currentStation){
-        currentStation =  createStation(splitText[4], splitText[3]);
-        stationDao.save(currentStation);
-    }
-
-    private void saveTrain(String[] splitText,TrainDaoImpl trainDao,Train currentTrain){
-        Station sourceStation = createStation(splitText[9],splitText[8]);
-        Station destinationStation = createStation(splitText[11],splitText[10]);
-        currentTrain = createTrain(splitText[0],splitText[1],sourceStation,destinationStation);
+    private Train saveTrain(String trainNo,String trainName,Station sourceStation,Station destinationStation){
+        Train currentTrain = new Train(trainName,trainNo,sourceStation,destinationStation);
         trainDao.save(currentTrain);
+        return currentTrain;
     }
+
+
 }
