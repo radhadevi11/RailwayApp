@@ -2,10 +2,6 @@
 package com.radha.railway.controller;
 
 import com.radha.railway.LatLng;
-import com.radha.railway.Train;
-import com.radha.railway.TrainStop;
-
-import java.util.ArrayList;
 
 public class StationModel {
     private String name;

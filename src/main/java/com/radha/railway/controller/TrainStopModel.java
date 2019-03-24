@@ -1,8 +1,5 @@
 package com.radha.railway.controller;
 
-import com.radha.railway.Station;
-import com.radha.railway.Train;
-
 public class TrainStopModel {
     private String arrivalTime;
     private String departureTime;

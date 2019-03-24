@@ -1,9 +1,6 @@
 package com.radha.railway.service;
 
-import com.radha.railway.LatLng;
-import com.radha.railway.Station;
-import com.radha.railway.Train;
-import com.radha.railway.TrainStop;
+import com.radha.railway.*;
 import com.radha.railway.dao.StationDaoImpl;
 import com.radha.railway.dao.TrainDaoImpl;
 import com.radha.railway.dao.TrainStopDaoImpl;
@@ -18,6 +15,11 @@ public class LoaderService {
    private TrainDaoImpl trainDao = new TrainDaoImpl();
    private TrainStopDaoImpl trainStopDao = new TrainStopDaoImpl();
 
+    LoaderService(StationDaoImpl stationDao, TrainDaoImpl trainDao, TrainStopDaoImpl trainStopDao) {
+        this.stationDao = stationDao;
+        this.trainDao = trainDao;
+        this.trainStopDao = trainStopDao;
+    }
 
     /*Algorithm
 Chennai - santragachi(1-12)(each station of the train is a train stop)
@@ -46,38 +48,40 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
     public void load(BufferedReader myReader, Map<String,LatLng> latLngMap) throws IOException {
         Map<String,Station> stations = new HashMap<>();
         Map<String,Train> trains = new HashMap<>();
-        Station currentStation = null;
+        Station currentStation;
         Train currentTrain = null ;
                String readText;
         myReader.readLine();
         while ((readText= myReader.readLine()) != null) {
             String splitText[] = readText.split(",");
-            String stationCode = splitText[3];
-            String trainNo = splitText[0];
-            int newSequence = Integer.parseInt(splitText[2]);
-            long newDistance=Long.parseLong(splitText[7]);
+
+            TimeTableEntry timeTableEntry = new TimeTableEntry(splitText);
 
 
-                currentStation = saveStation(splitText[4], splitText[3],stations);
+            String trainNo = timeTableEntry.getTrainNo();
+
+                currentStation = saveStation(timeTableEntry.getStationName(), timeTableEntry.getStationCode(),stations);
 
             if(! trains.containsKey(trainNo)){
                //to check whether this station is available in the station table
-                Station sourceStation = saveStation(splitText[9],splitText[8],stations);
-                Station destinationStation = saveStation(splitText[11],splitText[10],stations);
+                Station sourceStation = saveStation(timeTableEntry.getSourceStationName(),
+                        timeTableEntry.getSourceStationCode(),stations);
+                Station destinationStation = saveStation(timeTableEntry.getDestinationStationName(),
+                        timeTableEntry.getSourceStationCode(),stations);
 
-                currentTrain = saveTrain(splitText[1],trainNo,sourceStation,destinationStation);
+                currentTrain = saveTrain(timeTableEntry.getTrainName(),trainNo,sourceStation,destinationStation);
                 trains.put(trainNo,currentTrain);
 
             }
-            TrainStop trainStop = new TrainStop(splitText[5],splitText[6],
-                    currentTrain,newSequence,currentStation,newDistance);
+            TrainStop trainStop = new TrainStop(timeTableEntry.getArrivalTime(),timeTableEntry.getDepartureTime(),
+                    currentTrain,timeTableEntry.getSequence(),currentStation,timeTableEntry.getDistance());
             trainStopDao.save(trainStop);
 
 
         }
     }
 
-    private Station saveStation(String stationName, String stationCode, Map<String, Station> stations){
+     Station saveStation(String stationName, String stationCode, Map<String, Station> stations){
         Station currentStation = stations.get(stationCode);
         if (! stations.containsKey(stationCode) ) {
             currentStation = new Station(stationName, stationCode);
@@ -87,7 +91,7 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
         return currentStation;
     }
 
-    private Train saveTrain(String trainNo,String trainName,Station sourceStation,Station destinationStation){
+    Train saveTrain(String trainNo,String trainName,Station sourceStation,Station destinationStation){
         Train currentTrain = new Train(trainName,trainNo,sourceStation,destinationStation);
         trainDao.save(currentTrain);
         return currentTrain;

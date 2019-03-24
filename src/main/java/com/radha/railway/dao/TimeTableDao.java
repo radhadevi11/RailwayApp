@@ -77,10 +77,10 @@ Step5:Add the currentTrain to the trains list.
 
     public TimeTable getTimeTable() throws IOException {
         if (timeTable == null) {
-            InputStream latLanStream = this.getClass().getResourceAsStream("/StationLatitudeLongitude.csv");//search the csv file in the class path
+            InputStream latLanStream = this.getClass().getResourceAsStream("/src/main/resources/StationLatitudeLongitude.csv");//search the csv file in the class path
             BufferedReader latLngReader = new BufferedReader((new InputStreamReader(latLanStream)));
             Map<String,LatLng> latLngMap = loadLatLngFile(latLngReader);
-            InputStream timeTableStream = this.getClass().getResourceAsStream("/ChennaiCentralTimetable.csv");
+            InputStream timeTableStream = this.getClass().getResourceAsStream("/src/main/resources/ChennaiCentralTimetable.csv");
             BufferedReader timeTableReader = new BufferedReader(new InputStreamReader(timeTableStream));
             timeTable = loadFromFile(timeTableReader, latLngMap);
             //store in database
