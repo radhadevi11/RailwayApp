@@ -48,35 +48,11 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
     public void load(BufferedReader myReader, Map<String,LatLng> latLngMap) throws IOException {
         Map<String,Station> stations = new HashMap<>();
         Map<String,Train> trains = new HashMap<>();
-        Station currentStation;
-        Train currentTrain = null ;
-               String readText;
+        String readText;
         myReader.readLine();
         while ((readText= myReader.readLine()) != null) {
-            String splitText[] = readText.split(",");
 
-            TimeTableEntry timeTableEntry = new TimeTableEntry(splitText);
-
-
-            String trainNo = timeTableEntry.getTrainNo();
-
-                currentStation = saveStation(timeTableEntry.getStationName(), timeTableEntry.getStationCode(),stations);
-
-            if(! trains.containsKey(trainNo)){
-               //to check whether this station is available in the station table
-                Station sourceStation = saveStation(timeTableEntry.getSourceStationName(),
-                        timeTableEntry.getSourceStationCode(),stations);
-                Station destinationStation = saveStation(timeTableEntry.getDestinationStationName(),
-                        timeTableEntry.getSourceStationCode(),stations);
-
-                currentTrain = saveTrain(timeTableEntry.getTrainName(),trainNo,sourceStation,destinationStation);
-                trains.put(trainNo,currentTrain);
-
-            }
-            TrainStop trainStop = new TrainStop(timeTableEntry.getArrivalTime(),timeTableEntry.getDepartureTime(),
-                    currentTrain,timeTableEntry.getSequence(),currentStation,timeTableEntry.getDistance());
-            trainStopDao.save(trainStop);
-
+           saveOneRow(stations, trains, readText);
 
         }
     }
@@ -91,10 +67,46 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
         return currentStation;
     }
 
-    Train saveTrain(String trainNo,String trainName,Station sourceStation,Station destinationStation){
-        Train currentTrain = new Train(trainName,trainNo,sourceStation,destinationStation);
-        trainDao.save(currentTrain);
+    Train saveTrain( Map<String,Train> trains, TimeTableEntry timeTableEntry,
+                    Map<String, Station> stations){
+        String trainNo = timeTableEntry.getTrainNo();
+        Train currentTrain = trains.get(trainNo);
+        if(! trains.containsKey(trainNo)){
+            //to check whether this station is available in the station table
+            Station sourceStation = saveStation(timeTableEntry.getSourceStationName(),
+                    timeTableEntry.getSourceStationCode(),stations);
+            Station destinationStation = saveStation(timeTableEntry.getDestinationStationName(),
+                    timeTableEntry.getSourceStationCode(),stations);
+
+            currentTrain = new Train(timeTableEntry.getTrainName(), trainNo, sourceStation, destinationStation);
+            trains.put(trainNo,currentTrain);
+            trainDao.save(currentTrain);
+
+        }
         return currentTrain;
+    }
+
+     void saveOneRow(Map<String,Station> stations, Map<String,Train> trains, String readText ){
+        TimeTableEntry timeTableEntry = getTimeTableEntry(readText);
+
+        Station  currentStation = saveStation(timeTableEntry.getStationName(), timeTableEntry.getStationCode(),
+                stations);
+        Train currentTrain = saveTrain(trains, timeTableEntry, stations);
+
+        saveTrainStop(timeTableEntry, currentStation, currentTrain);
+
+    }
+
+    private void saveTrainStop(TimeTableEntry timeTableEntry, Station currentStation, Train currentTrain) {
+        TrainStop trainStop = new TrainStop(timeTableEntry.getArrivalTime(),timeTableEntry.getDepartureTime(),
+                currentTrain,timeTableEntry.getSequence(),currentStation,timeTableEntry.getDistance());
+        trainStopDao.save(trainStop);
+    }
+
+    private TimeTableEntry getTimeTableEntry(String readText) {
+        String splitText[] = readText.split(",");
+
+        return new TimeTableEntry(splitText);
     }
 
 
