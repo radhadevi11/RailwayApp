@@ -2,13 +2,15 @@ package com.radha.railway.dao;
 
 import com.radha.railway.Station;
 import com.radha.railway.Train;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static junit.framework.TestCase.assertNull;
+import static org.junit.Assert.assertEquals;
 
-class TrainDaoImplTest {
+
+public class TrainDaoImplTest {
 
     @Test
     public void testSave(){

@@ -1,15 +1,17 @@
 package com.radha.railway.service;
 
 import com.radha.railway.*;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-class TrainServiceTest {
+
+public class TrainServiceTest {
     @Test
     public void testGetTrains() throws IOException, NoSuchToStationException, NoSuchFromStationException {
         String fromStationCode = "ERD";

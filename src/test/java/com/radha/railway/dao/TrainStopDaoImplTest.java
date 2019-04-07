@@ -3,13 +3,13 @@ package com.radha.railway.dao;
 import com.radha.railway.Station;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-class TrainStopDaoImplTest {
+public class TrainStopDaoImplTest {
     @Test
     public void testSave(){
         TrainStopDaoImpl trainStopDao = new TrainStopDaoImpl();

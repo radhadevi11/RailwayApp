@@ -1,12 +1,14 @@
 package com.radha.railway.dao;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 import java.sql.Connection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertNotNull;
 
-class DbConnectionTest {
+
+public class DbConnectionTest {
     @Test
     public void testGetConnection(){
         DbConnection connection = new DbConnection();

@@ -1,28 +1,20 @@
 package com.radha.railway.service;
 
 import com.radha.railway.Station;
-import com.radha.railway.Train;
 import com.radha.railway.dao.StationDaoImpl;
-import com.radha.railway.dao.TrainDaoImpl;
-import com.radha.railway.dao.TrainStopDaoImpl;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-class LoaderServiceTest {
+
+public class LoaderServiceTest {
 
     public static final String TRAIN_NO = "1234";
     public static final String TRAIN_NAME = "Chennai Central";
@@ -85,32 +77,32 @@ class LoaderServiceTest {
 
     }
 
-   /* public void testSave(){
-        TrainDaoImpl trainDao = Mockito.mock(TrainDaoImpl.class);
-        StationDaoImpl stationDao = Mockito.mock(StationDaoImpl.class);
-        TrainStopDaoImpl trainStopDao = Mockito.mock(TrainStopDaoImpl.class);
+    /* public void testSave(){
+         TrainDaoImpl trainDao = Mockito.mock(TrainDaoImpl.class);
+         StationDaoImpl stationDao = Mockito.mock(StationDaoImpl.class);
+         TrainStopDaoImpl trainStopDao = Mockito.mock(TrainStopDaoImpl.class);
 
-        LoaderService loaderService = new LoaderService(stationDao,trainDao,trainStopDao);
+         LoaderService loaderService = new LoaderService(stationDao,trainDao,trainStopDao);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader();
-    }*/
-   @Test
-   public void testLoad() throws IOException {
-       BufferedReader reader = Mockito.mock(BufferedReader.class);
-       Mockito.when(reader.readLine()).thenReturn("header");
-       Mockito.when(reader.readLine()).thenReturn("line1");
-       Mockito.when(reader.readLine()).thenReturn("line2");
+         BufferedReader reader = new BufferedReader(new InputStreamReader();
+     }*/
+    @Test
+    public void testLoad() throws IOException {
+        BufferedReader reader = Mockito.mock(BufferedReader.class);
+        Mockito.when(reader.readLine()).thenReturn("header");
+        Mockito.when(reader.readLine()).thenReturn("line1");
+        Mockito.when(reader.readLine()).thenReturn("line2");
 
-       LoaderService service = Mockito.spy(new LoaderService(null, null, null));
-       Mockito.doNothing().when(service).saveOneRow(Mockito.anyMap(),Mockito.anyMap(),Mockito.eq("line1"));
-       Mockito.doNothing().when(service).saveOneRow(Mockito.anyMap(),Mockito.anyMap(),Mockito.eq("line2"));
+        LoaderService service = Mockito.spy(new LoaderService(null, null, null));
+        Mockito.doNothing().when(service).saveOneRow(Mockito.anyMap(),Mockito.anyMap(),Mockito.eq("line1"));
+        Mockito.doNothing().when(service).saveOneRow(Mockito.anyMap(),Mockito.anyMap(),Mockito.eq("line2"));
 
-       service.load(reader, null);
+        service.load(reader, null);
 
       /* Mockito.verify(service).saveOneRow(new HashMap<>(),new HashMap<>(),"line1");
        Mockito.verify(service).saveOneRow(new HashMap<>(),new HashMap<>(),"line2");*/
 
 
-   }
+    }
 
 }

@@ -3,13 +3,15 @@ import com.radha.railway.Station;
 import com.radha.railway.TimeTable;
 import com.radha.railway.Train;
 import com.radha.railway.TrainStop;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-class StationServiceTest {
+
+public class StationServiceTest {
    @Test
     public void testGetToStations() throws NoSuchFromStationException {
         StationService stationService = new StationService();

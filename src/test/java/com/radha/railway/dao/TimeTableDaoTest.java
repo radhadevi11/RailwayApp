@@ -1,11 +1,7 @@
 package com.radha.railway.dao;
 
-import com.radha.railway.Station;
-import com.radha.railway.TimeTable;
-import com.radha.railway.Train;
-import com.radha.railway.TrainStop;
-import com.radha.railway.LatLng;
-import org.junit.jupiter.api.Test;
+import com.radha.railway.*;
+import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,11 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-class TimeTableDaoTest {
+
+public class TimeTableDaoTest {
     @Test
-    void testLoadFromFilewithLatLng() throws IOException {
+    public void testLoadFromFilewithLatLng() throws IOException {
         TimeTableDao timeTableDao = new TimeTableDao();
         String oneLine = "Train No,Train Name,SEQ,Station Code,Station Name,Arrival time,Departure Time,Distance,Source Station,Source Station Name,Destination Station,Destination Station Name\n" +
                 "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.";
@@ -48,7 +45,7 @@ class TimeTableDaoTest {
         assertEquals(expectedStations,actual.getStations());
     }
     @Test
-    void testLoadFromFileForMultipleStationsWithLatLng() throws IOException {
+    public void testLoadFromFileForMultipleStationsWithLatLng() throws IOException {
         TimeTableDao timeTableDao = new TimeTableDao();
         String twoEntries = "Train No,Train Name,SEQ,Station Code,Station Name,Arrival time,Departure Time,Distance,Source Station,Source Station Name,Destination Station,Destination Station Name\n" +
                 "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.\n" +
@@ -83,7 +80,7 @@ class TimeTableDaoTest {
         assertEquals(expectedStations,actual.getStations());
     }
     @Test
-    void testLoadFromFileForMultipleStationsAndTrainsWithLatLng() throws IOException {
+    public void testLoadFromFileForMultipleStationsAndTrainsWithLatLng() throws IOException {
         TimeTableDao timeTableDao = new TimeTableDao();
         String twoTrains = "Train No,Train Name,SEQ,Station Code,Station Name,Arrival time,Departure Time,Distance,Source Station,Source Station Name,Destination Station,Destination Station Name\n" +
                 "2842,MAS SRC SPL,1,MAS,CHENNAI CENT,18:20:00,18:20:00,0,MAS,CHENNAI CENTRAL,SRC,SANTRAGACHI JN.\n" +
@@ -123,7 +120,7 @@ class TimeTableDaoTest {
 
     }
     @Test
-    void testLoadLatLng() throws IOException{
+    public void testLoadLatLng() throws IOException{
         TimeTableDao timeTableDao = new TimeTableDao();
         String oneLine = "Station Code,Latitude,Longitude\n"+
                          "NZM,28.5913871,77.2418643 \n"+
