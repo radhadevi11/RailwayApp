@@ -9,7 +9,10 @@ import com.radha.railway.dao.DaoFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class StationService {
 
@@ -34,7 +37,7 @@ public class StationService {
         if (fromStation == null) {
             throw new NoSuchFromStationException("");
         }
-        for (TrainStop trainStop : fromStation.getTrainStops()) {
+       /* for (TrainStop trainStop : fromStation.getTrainStops()) {
             int sequence = trainStop.getSequence();
             Train stoppingTrain = trainStop.getTrain();
             ArrayList<Station> stopingStations = stoppingTrain.getStoppingStations(sequence);
@@ -42,8 +45,19 @@ public class StationService {
                 destinationStations.put(stoppingStation.getCode(), stoppingStation);
             }
         }
+        return destinationStations;*/
+        fromStation.getTrainStops().stream()
+                .forEach(trainStop ->destinationStations.putAll(getDestinationStation(trainStop.getTrain(),trainStop.getSequence())));
         return destinationStations;
     }
+
+    private Map<String, Station> getDestinationStation(Train stoppingTrain, int sequence){
+        ArrayList<Station> stopingStations = stoppingTrain.getStoppingStations(sequence);
+        return stopingStations.stream()
+                .collect(Collectors.toMap(Station::getCode, Function.identity()));
+
+    }
+
 
     public Map<String, Station> getFromStations() throws IOException {
         return DaoFactory.getTimeTableDao().getTimeTable().getStations();
