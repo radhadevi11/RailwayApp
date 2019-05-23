@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -77,7 +78,7 @@ public class TrainServiceTest {
         stations.put("BNG", bangaloreStation);
         TimeTable  timeTable = new TimeTable(trains,stations);
 
-        ArrayList<Train> actualTrains =  trainService.getTrains(fromStationCode,toStationCode,timeTable);
+        List<Train> actualTrains =  trainService.getTrains(fromStationCode,toStationCode,timeTable);
 
         ArrayList<Train> expectedTrains = new ArrayList<>();
         expectedTrains.add(firstTrain);
@@ -154,7 +155,7 @@ public class TrainServiceTest {
         stations.put("BNG", bangaloreStation);
         TimeTable  timeTable = new TimeTable(trains,stations);
 
-        ArrayList<Train> actualTrains =  trainService.getTrains(fromStationCode,toStationCode,timeTable);
+        List<Train> actualTrains =  trainService.getTrains(fromStationCode,toStationCode,timeTable);
 
         ArrayList<Train> expectedTrains = new ArrayList<>();
         expectedTrains.add(firstTrain);

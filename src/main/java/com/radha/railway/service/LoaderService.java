@@ -11,17 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoaderService {
-   private StationDaoImpl stationDao = new StationDaoImpl();
-   private TrainDaoImpl trainDao = new TrainDaoImpl();
-   private TrainStopDaoImpl trainStopDao = new TrainStopDaoImpl();
+   private StationDaoImpl stationDao;
+   private TrainDaoImpl trainDao;
+   private TrainStopDaoImpl trainStopDao;
 
-    LoaderService(StationDaoImpl stationDao, TrainDaoImpl trainDao, TrainStopDaoImpl trainStopDao) {
+    public LoaderService(StationDaoImpl stationDao, TrainDaoImpl trainDao, TrainStopDaoImpl trainStopDao) {
         this.stationDao = stationDao;
         this.trainDao = trainDao;
         this.trainStopDao = trainStopDao;
     }
 
-    /*Algorithm
+/*Algorithm
 Chennai - santragachi(1-12)(each station of the train is a train stop)
 Step0.1:declare a Train object(currentTrain) and
 declare stations map with the key of stationCode and value of Station object and
@@ -76,7 +76,7 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
             Station sourceStation = saveStation(timeTableEntry.getSourceStationName(),
                     timeTableEntry.getSourceStationCode(),stations);
             Station destinationStation = saveStation(timeTableEntry.getDestinationStationName(),
-                    timeTableEntry.getSourceStationCode(),stations);
+                    timeTableEntry.getDestinationStationCode(),stations);
 
             currentTrain = new Train(timeTableEntry.getTrainName(), trainNo, sourceStation, destinationStation);
             trains.put(trainNo,currentTrain);
@@ -97,13 +97,13 @@ initialize a trains hashMap with the key of trainNo and value of Train object.
 
     }
 
-    private void saveTrainStop(TimeTableEntry timeTableEntry, Station currentStation, Train currentTrain) {
+    void saveTrainStop(TimeTableEntry timeTableEntry, Station currentStation, Train currentTrain) {
         TrainStop trainStop = new TrainStop(timeTableEntry.getArrivalTime(),timeTableEntry.getDepartureTime(),
                 currentTrain,timeTableEntry.getSequence(),currentStation,timeTableEntry.getDistance());
         trainStopDao.save(trainStop);
     }
 
-    private TimeTableEntry getTimeTableEntry(String readText) {
+    TimeTableEntry getTimeTableEntry(String readText) {
         String splitText[] = readText.split(",");
 
         return new TimeTableEntry(splitText);

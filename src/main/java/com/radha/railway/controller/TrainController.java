@@ -43,7 +43,7 @@ public class TrainController {
     }
 
     public List<TrainModel> getTrains(String fromStationCode,String toStationCode) throws IOException, NoSuchFromStationException, NoSuchToStationException {
-       ArrayList<Train> trains =  trainService.getTrains(fromStationCode,toStationCode);
+       List<Train> trains =  trainService.getTrains(fromStationCode,toStationCode);
        ArrayList<TrainModel> trainModels = new ArrayList<>();
        for(Train train : trains){
           trainModels.add(convertToTrainModel(train));
